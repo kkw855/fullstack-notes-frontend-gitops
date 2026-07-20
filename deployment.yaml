@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: notes-frontend
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: notes-frontend
+  template:
+    metadata:
+      labels:
+        app: notes-frontend
+    spec:
+      imagePullSecrets:
+        - name: ghcr-secret
+      containers:
+        - name: notes-frontend
+          # 💡 CI/CD 파이프라인(sed 명령어)이 원활하게 추적할 수 있도록 초기 주소를 세팅했습니다.
+          image: ghcr.io/kkw855/notes-frontend:latest
+          # 💡 Http4s 내장 에어버 서버 포트인 5002로 변경되었습니다.
+          ports:
+            - containerPort: 3000
+
+          # 🌟 SSR 서버의 안정적인 구동을 위한 무중단 배포용 헬스체크 추가
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 3000
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 3000
+            initialDelaySeconds: 5
+            periodSeconds: 10
+
+          resources:
+            # 🌟 Node.js SSR 엔진의 실시간 HTML 렌더링 연산을 고려한 리소스 설정
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+            requests:
+              memory: "256Mi"
+              cpu: "250m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: notes-frontend-service
+  namespace: default
+spec:
+  selector:
+    app: notes-frontend
+  type: ClusterIP
+  ports:
+    - port: 3000       # 클러스터 내부에서 이 서비스에 접근할 포트
+      targetPort: 3000 # 파드(컨테이너) 내부로 연결할 포트
