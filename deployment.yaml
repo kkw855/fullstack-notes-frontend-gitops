@@ -23,6 +23,11 @@ spec:
           ports:
             - containerPort: 3000
 
+          # 🌟 [추가] SSR 서버(Node.js)가 K8s 내부에서 스칼라 백엔드로 직접 통신할 주소 설정
+          env:
+            - name: API_SSR_URL
+              value: "http://custom-scala-api-service:5002/api"
+
           # 🌟 SSR 서버의 안정적인 구동을 위한 무중단 배포용 헬스체크 추가
           livenessProbe:
             httpGet:
