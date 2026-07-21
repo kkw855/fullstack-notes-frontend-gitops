@@ -31,13 +31,13 @@ spec:
           # 🌟 SSR 서버의 안정적인 구동을 위한 무중단 배포용 헬스체크 추가
           livenessProbe:
             httpGet:
-              path: /
+              path: /healthz
               port: 3000
             initialDelaySeconds: 10
             periodSeconds: 10
           readinessProbe:
             httpGet:
-              path: /
+              path: /healthz
               port: 3000
             initialDelaySeconds: 5
             periodSeconds: 10
