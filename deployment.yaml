@@ -18,7 +18,7 @@ spec:
       containers:
         - name: notes-frontend
           # 💡 CI/CD 파이프라인(sed 명령어)이 원활하게 추적할 수 있도록 초기 주소를 세팅했습니다.
-          image: ghcr.io/kkw855/notes-frontend:8a5ac271b5937b368f37443991f9e6dde2e72a7a
+          image: ghcr.io/kkw855/notes-frontend:63d1c4cd6e10ba411c97cfabd1fe091d206a993c
           # 💡 Http4s 내장 에어버 서버 포트인 5002로 변경되었습니다.
           ports:
             - containerPort: 3000
