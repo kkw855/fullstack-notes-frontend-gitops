@@ -5,6 +5,7 @@ namespace: notes-kotlin
 
 resources:
   - ../../base
+  - ingress.yaml
 
 patches:
   - target:

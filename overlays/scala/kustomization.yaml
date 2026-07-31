@@ -5,6 +5,7 @@ namespace: notes-scala
 
 resources:
   - ../../base
+  - ingress.yaml
 
 patches:
   - target:
